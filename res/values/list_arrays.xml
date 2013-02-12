@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="courses">
+        <item>"Волшебное письмо"</item>
+        <item>"Времена года"</item>
+        <item>"Веселая математика"</item>
+        <item>"Ориентирование"</item>
+    </string-array>
+    <string-array name="SelectLetters">
+        <item>"Рисование"</item>
+        <item>"Раскраски"</item>
+        <item>"Магические раскраски"</item>
+        <item>"Прописи"</item>
+    </string-array>
+    
+        <string-array name="questions">
+        <item>"Что"</item>
+        <item>"Как"</item>
+        <item>"Какой"</item>
+        <item>"Какая"</item>
+        <item>"Где"</item>
+        <item>"Почему"</item>
+        <item>"Зачем"</item>
+        <item>"Когда"</item>
+        <item>"Кто"</item>
+        <item>"Такой"</item>
+        <item>"Такое"</item>
+    </string-array>
+    
+</resources>
