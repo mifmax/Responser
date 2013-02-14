@@ -26,13 +26,13 @@ public class WikiRequest {
 
 	public String sendWikiRequest(String search) throws URISyntaxException,
 			ParserConfigurationException, SAXException, IOException {
-		HttpResponse response = null;
+	    HttpResponse response = null;
 		HttpClient client = new DefaultHttpClient();
 		HttpGet request = new HttpGet();
 		request.setURI(new URI(
 				"http://ru.wikipedia.org/w/api.php?action=opensearch&search="
-						+ URLEncoder.encode(search, "UTF-8")
-						+ "&limit=1&format=xml"));
+						+URLEncoder.encode(search.toString(), "UTF-8")
+						+"&limit=1&format=xml"));
 
 		response = client.execute(request);
 		HttpEntity entity = response.getEntity();

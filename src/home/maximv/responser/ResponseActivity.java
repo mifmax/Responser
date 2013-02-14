@@ -1,5 +1,6 @@
 package home.maximv.responser;
 
+import home.maximv.db.service.DbService;
 import home.maximv.utils.SpeechRecognition;
 import home.maximv.utils.WikiRequest;
 
@@ -12,18 +13,20 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import org.xml.sax.SAXException;
 
-import android.os.Bundle;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
+import android.database.sqlite.SQLiteDatabase;
+import android.os.Bundle;
 import android.speech.RecognizerIntent;
 import android.view.Menu;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.Toast;
 
 public class ResponseActivity extends Activity {
-
+    EditText ed;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,6 +37,11 @@ public class ResponseActivity extends Activity {
         if (activities.size() != 0) {
         } else {
         }
+        DbService dbService = new DbService(this);
+        SQLiteDatabase db = dbService.getReadableDatabase();
+        db.close();
+        ed=(EditText)findViewById(R.id.editText1);
+        ed.setText("где слоны");
         // new SpeechToText("Здравствуйте, представьтесь пожалуйста!").start();
 
     }
@@ -46,7 +54,7 @@ public class ResponseActivity extends Activity {
     }
     
     public void gogo(View v) throws ParserConfigurationException, SAXException, IOException {
-         Toast.makeText(this,getResponse("кто такой крокодил") , Toast.LENGTH_LONG).show();
+         Toast.makeText(this,getResponse(ed.getText().toString()) , Toast.LENGTH_LONG).show();
       }
 
       public void recognize(View v) {
@@ -72,14 +80,13 @@ public class ResponseActivity extends Activity {
         boolean isQuestion=false;
         String newString="";
         String answer="";
-        String[] q = quest.split(" ,");
+        String[] q = quest.split(" ");
         String[] a = getResources().getStringArray(R.array.questions);
         for (int i = 0; i < q.length; i++) {
             for (String questions : a) {
                 if (questions.equalsIgnoreCase(q[i])){
                     isQuestion=true;
                     q[i]="";
-                    break;
                 }
             }
         }
@@ -90,9 +97,10 @@ public class ResponseActivity extends Activity {
         }
         //if () есть в базе данных
         //else идем на wiki
+        newString=newString.trim();
         try {
             WikiRequest wikiRequest = new WikiRequest(); 
-           answer =  wikiRequest.sendWikiRequest("newString");
+           answer =  wikiRequest.sendWikiRequest(newString);
            Toast.makeText(this,answer , Toast.LENGTH_LONG).show();
 
         } catch (URISyntaxException e) {

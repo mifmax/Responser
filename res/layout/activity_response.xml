@@ -26,6 +26,7 @@
         android:layout_height="wrap_content"
         android:layout_above="@+id/textView1"
         android:layout_centerHorizontal="true"
+        android:onClick="gogo"
         android:layout_marginBottom="48dp"
         android:text="Button" />
 
