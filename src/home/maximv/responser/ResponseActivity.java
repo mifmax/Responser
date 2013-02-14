@@ -1,8 +1,11 @@
 package home.maximv.responser;
 
 import home.maximv.db.service.DbService;
+import home.maximv.utils.SpeechActivationListener;
 import home.maximv.utils.SpeechRecognition;
+import home.maximv.utils.SpeechToText;
 import home.maximv.utils.WikiRequest;
+import home.maximv.utils.WordActivator;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -25,7 +28,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
-public class ResponseActivity extends Activity {
+public class ResponseActivity extends Activity implements SpeechActivationListener{
     EditText ed;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +46,7 @@ public class ResponseActivity extends Activity {
         ed=(EditText)findViewById(R.id.editText1);
         ed.setText("где слоны");
         // new SpeechToText("Здравствуйте, представьтесь пожалуйста!").start();
+        new WordActivator(this,this,"Привет");
 
     }
 
@@ -117,5 +121,11 @@ public class ResponseActivity extends Activity {
         }
         return answer;
 
+    }
+
+    @Override
+    public void activated(boolean success) {
+        new SpeechToText("Здравствуйте, представьтесь пожалуйста!").start();
+        SpeechRecognition.run(this);
     }    
 }
