@@ -46,7 +46,8 @@ public class ResponseActivity extends Activity implements SpeechActivationListen
         ed=(EditText)findViewById(R.id.editText1);
         ed.setText("где слоны");
         // new SpeechToText("Здравствуйте, представьтесь пожалуйста!").start();
-        new WordActivator(this,this,"Привет");
+        WordActivator wa = new WordActivator(this,this,"Привет");
+        wa.detectActivation();
 
     }
 
