@@ -28,8 +28,9 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
-public class ResponseActivity extends Activity implements SpeechActivationListener{
+public class ResponseActivity extends Activity implements SpeechActivationListener {
     EditText ed;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,10 +44,10 @@ public class ResponseActivity extends Activity implements SpeechActivationListen
         DbService dbService = new DbService(this);
         SQLiteDatabase db = dbService.getReadableDatabase();
         db.close();
-        ed=(EditText)findViewById(R.id.editText1);
+        ed = (EditText) findViewById(R.id.editText1);
         ed.setText("где слоны");
         // new SpeechToText("Здравствуйте, представьтесь пожалуйста!").start();
-        WordActivator wa = new WordActivator(this,this,"Привет");
+        WordActivator wa = new WordActivator(this, this, "Привет");
         wa.detectActivation();
 
     }
@@ -57,56 +58,56 @@ public class ResponseActivity extends Activity implements SpeechActivationListen
         getMenuInflater().inflate(R.menu.activity_response, menu);
         return true;
     }
-    
+
     public void gogo(View v) throws ParserConfigurationException, SAXException, IOException {
-         Toast.makeText(this,getResponse(ed.getText().toString()) , Toast.LENGTH_LONG).show();
-      }
+        Toast.makeText(this, getResponse(ed.getText().toString()), Toast.LENGTH_LONG).show();
+    }
 
-      public void recognize(View v) {
-          SpeechRecognition.run(this);
-      }
+    public void recognize(View v) {
+        SpeechRecognition.run(this);
+    }
 
-      @Override
-      protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-          if (requestCode == SpeechRecognition.VOICE_RECOGNITION_REQUEST_CODE && resultCode == RESULT_OK) {
-              ArrayList<String> matches = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
-              String resString = "";
-              for (String s : matches) {
-                  resString += s;
-              }
-              resString.trim();
-     //         EditText rtext = (EditText) findViewById(R.id.nameKids);
-        //      rtext.setText(resString);
-          }
-          super.onActivityResult(requestCode, resultCode, data);
-      }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == SpeechRecognition.VOICE_RECOGNITION_REQUEST_CODE && resultCode == RESULT_OK) {
+            ArrayList<String> matches = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
+            String resString = "";
+            for (String s : matches) {
+                resString += s;
+            }
+            resString.trim();
+            // EditText rtext = (EditText) findViewById(R.id.nameKids);
+            // rtext.setText(resString);
+        }
+        super.onActivityResult(requestCode, resultCode, data);
+    }
 
-    public String getResponse(String quest){
-        boolean isQuestion=false;
-        String newString="";
-        String answer="";
+    public String getResponse(String quest) {
+        boolean isQuestion = false;
+        String newString = "";
+        String answer = "";
         String[] q = quest.split(" ");
         String[] a = getResources().getStringArray(R.array.questions);
         for (int i = 0; i < q.length; i++) {
             for (String questions : a) {
-                if (questions.equalsIgnoreCase(q[i])){
-                    isQuestion=true;
-                    q[i]="";
+                if (questions.equalsIgnoreCase(q[i])) {
+                    isQuestion = true;
+                    q[i] = "";
                 }
             }
         }
-        if (isQuestion){
+        if (isQuestion) {
             for (String questions : q) {
-                newString=newString+questions+" ";   
+                newString = newString + questions + " ";
             }
         }
-        //if () есть в базе данных
-        //else идем на wiki
-        newString=newString.trim();
+        // if () есть в базе данных
+        // else идем на wiki
+        newString = newString.trim();
         try {
-            WikiRequest wikiRequest = new WikiRequest(); 
-           answer =  wikiRequest.sendWikiRequest(newString);
-           Toast.makeText(this,answer , Toast.LENGTH_LONG).show();
+            WikiRequest wikiRequest = new WikiRequest();
+            answer = wikiRequest.sendWikiRequest(newString);
+            Toast.makeText(this, answer, Toast.LENGTH_LONG).show();
 
         } catch (URISyntaxException e) {
             e.printStackTrace();
@@ -125,5 +126,5 @@ public class ResponseActivity extends Activity implements SpeechActivationListen
     public void activated(boolean success) {
         new SpeechToText("Здравствуйте, представьтесь пожалуйста!").start();
         SpeechRecognition.run(this);
-    }    
+    }
 }
